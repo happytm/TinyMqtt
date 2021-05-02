@@ -29,6 +29,8 @@ void setup()
   Serial << "Connected to " << ssid << "IP address: " << WiFi.localIP() << endl;
 
   broker.begin();
+
+  // ============= Client Subscribe ================
   client.setCallback(receivedMessage);
   client.subscribe(receivedTopic);
   //client.subscribe(sentTopic);
@@ -39,8 +41,12 @@ void loop()
   broker.loop();  // Don't forget to add loop for every broker and clients
   client.loop();
   delay(10000);
-  // ============= client publish ================
-    
+  
+  // ============= Client Publish ================
+    std::string sentPayload = "Publishing....";
+    client.publish(sentTopic, sentPayload);
+    Serial << "Client " << sentPayload.c_str() << endl;
+
     client.publish(sentTopic, std::string(String(millis()).c_str()));
     Serial << "Client published to topic " << sentTopic.c_str() << " with payload " << std::string(String(millis()).c_str()) << endl;
     
